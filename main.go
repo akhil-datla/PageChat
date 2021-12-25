@@ -19,6 +19,7 @@ var upgrader = websocket.Upgrader{}
 // Define our message object
 type Message struct {
 	Website      string          `json:"website"`
+	Username     string          `json:"username"`
 	Message   string          `json:"message"`
 	Websocket *websocket.Conn `json:"-"`
 }
