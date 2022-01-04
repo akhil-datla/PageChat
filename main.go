@@ -1,12 +1,16 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"time"
 
+	"github.com/ReneKroon/ttlcache/v2"
 	"github.com/gorilla/websocket"
 	"github.com/pterm/pterm"
 )
@@ -16,21 +20,45 @@ var broadcast = make(chan Message)               // broadcast channel
 // Configure the upgrader
 var upgrader = websocket.Upgrader{}
 
+var cache ttlcache.SimpleCache = ttlcache.NewCache()
+
 // Define our message object
 type Message struct {
-	Website      string          `json:"website"`
-	Username     string          `json:"username"`
+	Website   string          `json:"website"`
+	Username  string          `json:"username"`
 	Message   string          `json:"message"`
 	Websocket *websocket.Conn `json:"-"`
 }
 
 func main() {
 	banner()
-	//read port flag
+	// Read port flag
 	portPtr := flag.Int("port", 8080, "port to listen on")
 	flag.Parse()
+
+	// Set up the cache with a TTL of 24 hours
+	cache.SetTTL(time.Duration(24 * time.Hour))
+
 	// Configure websocket route
 	http.HandleFunc("/ws", handleConnections)
+
+	// Get past messages for a website
+	http.HandleFunc("/messages", func(w http.ResponseWriter, r *http.Request) {
+		website := r.URL.Query().Get("website")
+		if website == "" {
+			pterm.Error.Println("No website specified")
+			return
+		}
+		messages, _ := cache.Get(website)
+
+		if messages == nil {
+			messages = make([]Message, 0)
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(messages)
+	})
+
 	// Start listening for incoming chat messages
 	go handleMessages()
 	// Start the server on localhost port and log any errors
@@ -40,6 +68,12 @@ func main() {
 		pterm.Error.Println("ListenAndServe: ", err)
 		os.Exit(1)
 	}
+
+	// Capture ctrl+c
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	<-c
+	cache.Close()
 }
 
 func handleConnections(w http.ResponseWriter, r *http.Request) {
@@ -91,6 +125,13 @@ func handleMessages() {
 	for {
 		// Grab the next message from the broadcast channel
 		msg := <-broadcast
+
+		tempMsgs, _ := cache.Get(msg.Website)
+		if tempMsgs == nil {
+			tempMsgs = make([]Message, 0)
+		}
+		tempMsgs = append(tempMsgs.([]Message), msg)
+		cache.Set(msg.Website, tempMsgs)
 
 		clientsByWebsite := clients[msg.Website]
 		for _, client := range clientsByWebsite {
