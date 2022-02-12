@@ -160,6 +160,6 @@ func remove(s []*websocket.Conn, i int) []*websocket.Conn {
 //banner for the program
 func banner() {
 	pterm.DefaultCenter.Print(pterm.DefaultHeader.WithFullWidth().WithBackgroundStyle(pterm.NewStyle(pterm.BgCyan)).WithMargin(10).Sprint("PageChat"))
-	pterm.Info.Println("(c)2022 by Akhil Datla and Alexander Ott")
+	pterm.Info.Println("(c)2022 by Akhil Datla")
 
 }
