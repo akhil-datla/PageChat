@@ -1,6 +1,9 @@
 # github.com/ReneKroon/ttlcache/v2 v2.11.0
 ## explicit; go 1.15
 github.com/ReneKroon/ttlcache/v2
+# github.com/TwiN/go-away v1.6.0
+## explicit; go 1.17
+github.com/TwiN/go-away
 # github.com/atomicgo/cursor v0.0.1
 ## explicit; go 1.15
 github.com/atomicgo/cursor
@@ -35,3 +38,8 @@ golang.org/x/sys/windows
 # golang.org/x/term v0.0.0-20210927222741-03fcf44c2211
 ## explicit; go 1.17
 golang.org/x/term
+# golang.org/x/text v0.3.7
+## explicit; go 1.17
+golang.org/x/text/runes
+golang.org/x/text/transform
+golang.org/x/text/unicode/norm

@@ -13,6 +13,7 @@ import (
 	"github.com/ReneKroon/ttlcache/v2"
 	"github.com/gorilla/websocket"
 	"github.com/pterm/pterm"
+	"github.com/TwiN/go-away"
 )
 
 var clients = make(map[string][]*websocket.Conn) // connected clients
@@ -126,16 +127,18 @@ func handleMessages() {
 		// Grab the next message from the broadcast channel
 		msg := <-broadcast
 
+		censoredMessage := goaway.Censor(msg.Message)
+
 		tempMsgs, _ := cache.Get(msg.Website)
 		if tempMsgs == nil {
 			tempMsgs = make([]Message, 0)
 		}
-		tempMsgs = append(tempMsgs.([]Message), msg)
+		tempMsgs = append(tempMsgs.([]Message), Message{msg.Website, msg.Username, censoredMessage, msg.Websocket})
 		cache.Set(msg.Website, tempMsgs)
 
 		clientsByWebsite := clients[msg.Website]
 		for _, client := range clientsByWebsite {
-			err := client.WriteJSON(msg)
+			err := client.WriteJSON(Message{msg.Website, msg.Username, censoredMessage, msg.Websocket})
 			if err != nil {
 				pterm.Error.Printf("error: %v", err)
 				client.Close()
@@ -157,6 +160,6 @@ func remove(s []*websocket.Conn, i int) []*websocket.Conn {
 //banner for the program
 func banner() {
 	pterm.DefaultCenter.Print(pterm.DefaultHeader.WithFullWidth().WithBackgroundStyle(pterm.NewStyle(pterm.BgCyan)).WithMargin(10).Sprint("PageChat"))
-	pterm.Info.Println("(c)2021 by Akhil Datla and Alex Ott")
+	pterm.Info.Println("(c)2022 by Akhil Datla and Alexander Ott")
 
 }
