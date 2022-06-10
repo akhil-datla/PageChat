@@ -9,7 +9,6 @@ import (
 	"os"
 	"os/signal"
 	"time"
-
 	"github.com/ReneKroon/ttlcache/v2"
 	"github.com/gorilla/websocket"
 	"github.com/pterm/pterm"
