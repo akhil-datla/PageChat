@@ -1,0 +1,45 @@
+# github.com/ReneKroon/ttlcache/v2 v2.11.0
+## explicit; go 1.15
+github.com/ReneKroon/ttlcache/v2
+# github.com/TwiN/go-away v1.6.0
+## explicit; go 1.17
+github.com/TwiN/go-away
+# github.com/atomicgo/cursor v0.0.1
+## explicit; go 1.15
+github.com/atomicgo/cursor
+# github.com/gookit/color v1.4.2
+## explicit; go 1.12
+github.com/gookit/color
+# github.com/gorilla/websocket v1.4.2
+## explicit; go 1.12
+github.com/gorilla/websocket
+# github.com/mattn/go-runewidth v0.0.13
+## explicit; go 1.9
+github.com/mattn/go-runewidth
+# github.com/pterm/pterm v0.12.33
+## explicit; go 1.15
+github.com/pterm/pterm
+github.com/pterm/pterm/internal
+# github.com/rivo/uniseg v0.2.0
+## explicit; go 1.12
+github.com/rivo/uniseg
+# github.com/xo/terminfo v0.0.0-20210125001918-ca9a967f8778
+## explicit; go 1.15
+github.com/xo/terminfo
+# golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
+## explicit
+golang.org/x/sync/singleflight
+# golang.org/x/sys v0.0.0-20211013075003-97ac67df715c
+## explicit; go 1.17
+golang.org/x/sys/internal/unsafeheader
+golang.org/x/sys/plan9
+golang.org/x/sys/unix
+golang.org/x/sys/windows
+# golang.org/x/term v0.0.0-20210927222741-03fcf44c2211
+## explicit; go 1.17
+golang.org/x/term
+# golang.org/x/text v0.3.7
+## explicit; go 1.17
+golang.org/x/text/runes
+golang.org/x/text/transform
+golang.org/x/text/unicode/norm
